@@ -1,7 +1,7 @@
 <nav class="main-nav">
   <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/vrcapstone19sp-team5">Home</a></li>
+    <li><a href="/vrcapstone19sp-team5/proposal">proposal</a></li>
   </ul>
 </nav>
 
