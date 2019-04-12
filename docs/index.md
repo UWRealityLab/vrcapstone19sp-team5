@@ -1,3 +1,10 @@
+<nav class="main-nav">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+  </ul>
+</nav>
+
 # Week 1 - Main Ideas and Plans
 ### April 12th, 2019
 
