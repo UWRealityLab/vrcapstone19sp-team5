@@ -1,7 +1,7 @@
 <nav class="main-nav">
   <ul>
-    <li><a href="/vrcapstone19sp-team5">Home</a></li>
-    <li><a href="/vrcapstone19sp-team5/proposal">proposal</a></li>
+    <li><a href="/vrcapstone19sp-team5">Updates Blog</a></li>
+    <li><a href="/vrcapstone19sp-team5/proposal">Proposal</a></li>
   </ul>
 </nav>
 
@@ -18,4 +18,6 @@ In doing so, we hope to create a sense of empathy for the disabled, and possibly
 
 A key part of the experience will be rigging a chair, seen above, to be a wheelchair, where we'll attach the motion controllers to the sides of the wheel.
 
-The user will constantly have to turn the wheels of the chair to be able to move around in the virtual environment, which helps add enormous authenticity to the experience. The chair will be elevated slightly to prevent it from actually moving when they turn the wheels, and straps will be attached from the wheels to their wrists to create the illusion of resistance (otherwise they'd be spinning the wheels in midair).
+The user will constantly have to turn the wheels of the chair to be able to move around in the virtual environment, which helps add enormous authenticity to the experience. The chair will be elevated slightly to prevent it from actually moving when they turn the wheels, and straps will be attached from the wheels to their wrists to create the illusion of resistance (otherwise they'd be spinning the wheels in midair). This will also physically exhaust the user, which also helps build empathy as they're experiencing the same exhaustion an actual disabled person would experience from rolling around in a wheelchair all day.
+
+The user will have to navigate through an area on this virtual wheelchair. Obviously, this environment will be specifically designed to be inconvenient, such as disabled elevators and the like. Staircases will be blocked off, and numerous other precautions taken. It's likely that we'll model the virtual environment after the CSE building, or perhaps a simplified version of downtown Seattle.
