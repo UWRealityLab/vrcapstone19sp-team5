@@ -6,8 +6,4 @@
   </ul>
 </nav>
 
-<object data="PRD.pdf" type="application/pdf" width="100%" height="100%">
-  <p>PRD: <a href="PRD.pdf">PDF!</a></p>
-</object>
-
 <embed src= "PRD.pdf" width="500" height= "375">
