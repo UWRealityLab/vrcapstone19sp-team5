@@ -6,4 +6,4 @@
   </ul>
 </nav>
 
-<embed src= "PRD.pdf" width="500" height= "375">
+<embed src= "PRD.pdf" width="650" height= "550">
