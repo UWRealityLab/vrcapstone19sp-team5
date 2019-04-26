@@ -26,6 +26,14 @@ For our next scenario, we plan to have an elevator that's usually available brok
 
 Our last scenario features a library, although we're still working on that one.
 
+We have been experimenting with some interactable elements of the environments. Here is a short video demo of an automatic door
+that stays open for 5 seconds, which might be too short for wheelchair users.
+
+<video controls="controls">
+  <source type="video/mp4" src="img/autodoordemo.mp4"></source>
+  <p>Your browser does not support the video element.</p>
+</video>
+
 On the topic of motion sickness, we've actually found that there isn't all that much to be had. The speed of the wheelchair and the natural physical feedback you get by spinning the controllers counteracts a fair amount of it. This will be mitigated even more by actual wheels keeping the controllers steady.
 
 This next week is going to mostly be working out the kinks of the wheelchairs and hopefully getting a physical prototype working, and putting the wheelchair into an actual environment.
