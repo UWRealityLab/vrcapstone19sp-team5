@@ -29,7 +29,7 @@ Our last scenario features a library, although we're still working on that one.
 We have been experimenting with some interactable elements of the environments. Here is a short video demo of an automatic door
 that stays open for 5 seconds, which might be too short for wheelchair users.
 
-<video controls="controls">
+<video controls="controls" width="640" height="480">
   <source type="video/mp4" src="img/autodoordemo.mp4"></source>
   <p>Your browser does not support the video element.</p>
 </video>
