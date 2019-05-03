@@ -6,6 +6,35 @@
   </ul>
 </nav>
 
+# Week 5 - Demos and Expensive Bike tires
+## May 3rd, 2019
+
+We finally managed to put together the chair at last!
+
+![chair](img/chairwheel.jpg)
+
+The wheels were a lot more expensive than we thought, totallying to about $120 for the two of them. The chair cost $2. This week we mostly were coding and modeling our scenes. Later today we plan to meet up with a manual wheelchair user to get their thoughts on our plans for the experience.
+
+We're still facing the bug featuring rotation of the wheels, but I (Ilya Kucherov) have a few ideas on a solution.
+
+Primarily, I'd like to construct a holder for the controller that will be duct taped to the wheel. This will let me just put the controller in and take it out whenever I want. Ideally, the box would be oriented in such a way as to align the orbitals of the controller along the x-axis. Essentially, when I spin it, I want the controller's rotation to go from 0 to 360 rather than making the weird negative and positive number leaps it enjoys. If I orient it properly, rather than taking the relative rotation between frames, I can just hook up the wheel directly to the change in x-axis rotation for the controller. Of course, I'd need to convert the negative rotation values to positive. Euler angles seem to not work for some reason, so this is a hopeful solution - just orienting the controller properly to create the proper axis so that we can FINALLY get a live demo working.
+
+```
+[ERROR/MISSINGVIDEO/libraryScene.mp4]
+```
+
+As mentioned earlier, we've done some great work featuring the scenes. The above showcases the basic library scene that we're considering.
+
+We've also finally gotten started on messing with LeapMotion. We're using the code of Operator 1983, a previous capstone project, that created physical representations of the hands and allowed them to actually interact with things in the environment. Instead of just fingertips, the whole hand will have a constantly shifting hitbox. Things should go well on this front, but we're still figuring things out. Our current VR Headset has the leapmotion camera superglued to the front, meaning we get an experience without controllers, which is what we're going for with the whole wheelchair experience.
+
+Motion sickness is still a threat, but we can't deal with that until we get our wheelchair rotation working.
+
+As a general update for the team members and what we plan to do in the future:
+
+Ilya: Working on physical wheelchair-virtual wheelchair mapping
+Luke: Working on making leap motion interactions in the VR scenes
+David and Kyle: working on the bathroom interaction and the finishing touches of the library interaction, general scene planning.
+
 # Week 4 - Wheelchair Progress and Environments
 ### April 26th, 2019
 
