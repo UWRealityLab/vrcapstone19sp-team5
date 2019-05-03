@@ -19,9 +19,10 @@ We're still facing the bug featuring rotation of the wheels, but I (Ilya Kuchero
 
 Primarily, I'd like to construct a holder for the controller that will be duct taped to the wheel. This will let me just put the controller in and take it out whenever I want. Ideally, the box would be oriented in such a way as to align the orbitals of the controller along the x-axis. Essentially, when I spin it, I want the controller's rotation to go from 0 to 360 rather than making the weird negative and positive number leaps it enjoys. If I orient it properly, rather than taking the relative rotation between frames, I can just hook up the wheel directly to the change in x-axis rotation for the controller. Of course, I'd need to convert the negative rotation values to positive. Euler angles seem to not work for some reason, so this is a hopeful solution - just orienting the controller properly to create the proper axis so that we can FINALLY get a live demo working.
 
-```
-[ERROR/MISSINGVIDEO/libraryScene.mp4]
-```
+<video controls="controls">
+  <source type="video/mp4" src="img/libraryScene.mp4"></source>
+  <p>Your browser does not support the video element.</p>
+</video>
 
 As mentioned earlier, we've done some great work featuring the scenes. The above showcases the basic library scene that we're considering.
 
