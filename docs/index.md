@@ -6,6 +6,72 @@
   </ul>
 </nav>
 
+# Week 6 - Minimum Viable Product and Holsters
+## May 10th, 2019
+
+We're starting to get into the endgame here. This week we finished our MVP to mostly our satisfaction. We've finally managed to deal with the rotation bug and got the wheelchair working. An explanation requires some context:
+
+![holster](img/holster1.jpg)
+![holster](img/holster2.jpg)
+
+Seen above, Ilya spent several hours putting together holsters made out of wood, foam rubber, and duct tape. These holsters are basically what makes the wheelchair work. In the past, we didn't have a consistent position for the controllers. We'd constantly go back and forth each time we duct taped them to the wheel for testing. By having a stable and consistent position, we were finally able to work out the code necessary to keep things working. The holster is made out of a wood backing, overlaid with foam rubber to keep the controllers snug. This whole thing is kept together by duct tape. The rotation of the controllers when the wheels spin directly corresponds to the velocity of the wheels in game, and thus, their movement. We got the main part of the project working. This is incredibly powerful, as we now have a wheelchair prefab that we can literally just drop into whatever environment we want, no need for adjustments. We ran into a few scaling and size issues, but that's easily dealt with by adjusting a few numbers.
+
+A big problem we encountered was the tilting of the wheelchair:
+
+![tilt](img/tilt.png)
+
+This was a weird bug where the chair would eventually rotate whenever the wheels rotated. We couldn't simply freeze the z-rotation to prevent this from happening since that messed with turning and other functions. We ended up just making an invisible axle/seat that would keep the wheels connected, and then figured out the position and direction the chair should be appearing in and facing based on invisible GameObjects that where placed at the center of each wheel, and then just teleported it there:
+
+```
+void Update()
+    {
+        center = (point1.transform.position + point2.transform.position) / 2;
+        center.y = center.y + 0.173f;
+        gameObject.transform.position = center;
+
+
+        direction = point1.transform.position - point2.transform.position;
+        direction = Quaternion.AngleAxis(90, Vector3.up) * direction;
+        gameObject.transform.rotation = Quaternion.LookRotation(direction);
+
+    }
+```
+
+Obviously this worked, as seen in this video:
+
+<video controls="controls">
+  <source type="video/mp4" src="img/wheelchairAtWork.mp4"></source>
+  <p>Your browser does not support the video element.</p>
+</video>
+
+Something to consider is that the wheelchair's 80-side wheels create smooth movement, but allow for very quick turns. Far quicker than the actual forward movement. This is a bit wonky, and also counterproductive, as someone is able to make a very quick 180 just by spinning the two wheels. We want to make the turning far less precise and far less powerful to more accurately match an actual wheelchair.
+It's likely we'll do this with something like:
+
+```
+PSEUDOCODE
+if(wheel.rotationalVelocity is positive AND otherwheel.rotationalVelocity is negative) {
+  wheel.rotationalVelocity is divided by two;
+  otherwheel.rotationalVelocity is divided by two;
+}
+```
+
+Overall, the wheelchair is dealt with, and we're just tweaking it to iron out some kinks. The people that have tried it reported minimal motion sickness. We can slow the wheelchair down to alleviate this somewhat, but VR that has movement will always have some kind of small amount of motion sickness, which is just par for the course. If we somehow figured out a way to deal with that last bit, we'd probably high-key revolutionize VR. So, you know, not likely.
+
+On the topic of environments, now that we've completed the wheelchair, we've decided to scale down our project slightly. Before, we had 3 scenarios plotted out, but have decided to instead do only 2 scenarios to impose a rough 7-10 minute constraint on playtime. We have two scenarios planned out:
+
+The first is the restaurant. Having been in talks with a manual wheelchair user, We've decided on having a scenario where you come into a restaurant with your family. Having been pushing a wheelchair all day, your hands are dirty, so you're asked to go to the bathroom. You'll have to navigate an obstacle course of tables and other things to get to the bathroom. Upon arrival, the bathroom's narrow corridors will mean that to get out, you'll have to either ride backwards perfectly, or do an annoying 8-point turn to turn around effectively. We hope that this will drive home a few issues. Some subtle nuances to include is showing how actually reaching an elevated sink while sitting is troublesome and the like.
+
+Our second scenario is navigating a library with narrow shelves and the like. You can only go forwards, and encountering an obstacle will force you to wheel backwards since there isn't room to turn around. Furthermore, the purpose of this scenario is to reach a working elevator. The plan is to have 2 elevators in the scene, and no matter which one the user heads for, the first one they arrive at will be out of order, forcing them to head across the library to get to the other working elevator. Upon arrival, they'll realize that they have to press the button to open it, and then quickly turn around and get into the elevator backwards since there isn't much room to turn around in a wheelchair, and they need to push buttons in order to actually get to their destination. The implications here are obvious. As mentioned at the start of this blog, we hope to instill some empathy into the user.
+
+On next week's agenda:
+
+Ilya: will mostly be working on modelling the restaurant and figuring out good obstacles to place everywhere. Tables, chairs, the layout of the restaurant, etc. Textures will be created and more.
+
+Luke: Is working on getting leap motion interaction to work in the environment, more specifically, trying to get the buttons on the elevator to be pushable so that you can go up and down/call the elevator and to get the door in the library to be able to be pulled outwards.
+
+Kyle and David: Refining/remaking the library and the bathroom, fixing models and scaling, textures, overlapping objects, replacing plane walls with 3D walls, etc.
+
+---
 # Week 5 - Demos and Expensive Bike tires
 ## May 3rd, 2019
 
@@ -39,6 +105,7 @@ David and Kyle: working on the bathroom interaction and the finishing touches of
 # Week 4 - Wheelchair Progress and Environments
 ### April 26th, 2019
 
+---
 This week we made some real progress in translating the rotation of the controllers into the rotation of the wheels on a wheelchair.
 
 <video controls="controls">
