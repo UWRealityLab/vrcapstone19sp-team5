@@ -6,6 +6,65 @@
   </ul>
 </nav>
 
+# Week 7 - Environments and Leap motion
+## May 17th, 2019
+
+With the wheelchair finished (aside from a tweak or two), the entire group is focused exclusively on constructing environments and getting the LeapMotion to work. While Ilya worked on the wheelchair, for the first 6 weeks, the rest of the team was hard at work plotting out the environment and constructing elevators and other various appliances.
+
+Luke has been hard at work on the Leap Motion: This week I was working on getting leap motion integrated into our library scene. I started off by just testing the leap motion interactions in a test environment to be sure that I knew how to get it to work in a simple setting. This consisted of making a simple cube and seeing if it fell through the floor immediately, if it bugged the headset out, or if it couldn’t be grasped. After working in the test environment and getting everything to work, I began trying to put the leap motion interaction behavior into our library scene. In order to do this, I had to put the leap rig onto our wheelchair prefab so that the leap camera would move with the wheelchair. This was the point at which I encountered several issues.
+
+<video controls="controls">
+  <source type="video/mp4" src="img/leapMotionVideo.mp4"></source>
+  <p>Your browser does not support the video element.</p>
+</video>
+
+The hands refused to show up in the library scene, it was unclear where to put the leap rig prefab so that the camera would be able to see the hands, and the leap software kept presenting me with update warnings. I updated the leap software, then set to work on fixing these bugs. After many attempts, I was able to successfully get the hands to show up in front of the wheelchair. I then set out to try to interact with objects in the library scene with the leap motion hands. When I attempted to grab a nearby monitor on a desk in the library, the entire scene glitched terribly, as the leap hands couldn’t discern which collider they were trying to interact with. This was fixed by getting rid of a mesh collider on the monitor, but introduced a new issue in which the wheelchair went flying upon the leap hands grabbing anything. I attempted to fix this by increasing the mass of the wheelchair, which seemed to fix the problem for now (this will need to be adjusted later). I've made some decent progress here:
+
+![hands](img/leapmotionHands.jpg)
+
+I will be continuing to work on getting the leap motion interactions to be more seamless, especially because there is currently an issue where if the leap hands touch the wheels of the wheelchair, the wheelchair goes flying (which, needless to say, is not ideal). Hopefully I’ve seen the last of the issues that can and should pop up and once we fix them, we can focus more on refining the interaction behavior of our objects with the leap motion hands.
+
+Kyle has been mostly working on the elevator and library scenes: This week was mostly testing and refining the environments in VR.
+
+I encountered a lot of issues as tends to happen with somewhat foreign code. Although I've seen it in action, I wasn't the one to code it. I wasted a lot of time dealing with the issue that the wheelchair doesn’t move when the wheels are rotated. I added some debugging snippets in Ilya’s code for the wheelchair and found that the rotation of the controllers weren’t detected in Unity, and the problem persisted even after rebooting. In the end, removing the controllers from the workstation and re-pairing fixed the issue.
+
+We also run into the issue that prefabs imported into the scenes lost some properties — some public fields were reset when the prefab is imported. We found that it was caused by importing SteamVR from an external package instead of the Asset Store.
+
+After successfully importing the wheelchair into the scenes, I found that the scaling of objects in the scenes are not realistic — the wheelchair was very small compared to everything else. I rescaled the wheelchair to make it the appropriate size relative to the bookshelves, and had to fix the force of the wheels to make it move fast enough. Then I found the elevator to be way too large, so I shrinked it to a relatively reasonable size. We will need to shrink it down even more so the wheelchair can’t turn around in it. Unfortunately our current elevator is not very-well designed so resizing it breaks a lot of things.
+
+After talking to Ilya and Luke, I realized that the library scene we have right now is far from good — many blocks are overlapping so they blink a lot in the actual game, the walls are crossing, textures are not aligned and the elevator design is way too ugly. I have been working on a remake of the library scene we have got. The work was not very technical, but did take time and patience.
+
+The scene we showed last week at the MVP report was not perfect: the elevator does not work properly, and as mentioned, is way too ugly; the textures aren't aligned; different objects intersect so the overlapping areas flicker in the game; the scaling of objects and the wheelchair doesn't look realistic. Also, internally, the game object hierarchy was a mess --- things aren't named properly, the parent-child relationships were not reasonable.
+
+Therefore, I started by fixing the internal design issues, by creating lots of prefabs of bookshelves, table-chair groups, floors and walls to regroup everything and keep them organized. As mentioned, I scaled everything to match the size of the wheelchair. The elevator was intentionally scaled down so that the wheelchair could barely fit in there.
+
+Also, I modified the design of the library a bit to make it more realistic. In the previous versions of the library, bookshelves were placed like a maze. This was intentional, because we want the user to have an inconvenient experience, but it is not common for real-world library to arrange bookshelves like that. Therefore, I instead placed other obstacles in the walkways betwen the shelves, e.g. chairs, printers, etc., to make the scene more realistic. I also made the walkways between shelves more narrow to create more challenge for the player.
+
+For the elevator, I'm glad that I decided to give up and find a working elevator online. It took some effort to set up, but the result is really nice. The new elevator shows the current floor the elevator is on, and the interior is well decorated. We will replace the buttons with LeapMotion controllable ones in the following week which is going to take some effort, once we get LeapMotion working in our test environments. Here is a video clip of the elevator working in the library:
+
+<video controls="controls">
+  <source type="video/mp4" src="img/NewElevator.mp4"></source>
+  <p>Your browser does not support the video element.</p>
+</video>
+
+David and Ilya were mostly working on two halves of the same project: Ilya was designing and modeling the restaurant, while David was working on the bathroom, and also giving his inputs on the restaurant: I mostly spent my time dealing with the same issues Kyle was: the bathroom scaling was off, and there were very many overlapping and flickering textures. The bathroom was constructed with some basic free prefabs, but I'm likely to redo it completely. This week I dealt with the resizing issue by completely rescaling things, and reconstructing the scene based on the scale of the wheelchair. By doing so, we hope to avoid the issue of having to mess with the forces applied to the wheelchair. Ilya and I have been in contact with Julie, a manual wheelchair user mentioned earlier, constantly discussing what works and what doesn't. We're representing a social group we aren't a part of, so consulting is important to actively depict difficulties. We've decided on making the bathroom narrow, with barely enough space to turn around. The end goal here is to force an 8-point turn. Furthermore, we're moving the sinks around so that they're just slightly too tall for the wheelchair user to use. We want things to be pretty bad for the user.
+
+There's really not much technical detail for this week in all honesty, it was mostly just modeling and remodeling various prefabs and fixing the scaling. The biggest technical aspect I can think of was mostly by messing with the tiling and offset of materials so that things wouldn't look overlapped.
+
+Ilya was mostly dealing with the restaurant scene: This week, I was going over several designs and concepts for the restaurant. At the moment, I don't have anything truly concrete, like a floorplan, but I plan to visit the various restaurants that Julie recommends in order to actually recreate an accurate setting for the user. For the most part, David and I are coordinating the bathroom and restaurant, as they're connected in the same scene. We plan to have the scene open up with the user in an elevator. It dings and opens up to a fairly fancy restaurant. While normally, the bathroom would be located on another floor, we already have a scene (the library) dealing with elevators, so the bathroom will conveniently be located on the same floor. Of course, getting there is a completely different story. It'll be a veritable obstacle course. We're likely to eventually add human models, sitting around, chatting, making ambient noise. We are unlikely to fully animate them - we only have ten weeks and we've devoted a large part of that time towards the wheelchair and environments. Animation is a stretch goal.
+
+As a last note, a small bug occurs with the wheelchair. The wheels of the wheelchair are custom 80-sided polygons. The cylinders of Unity made for a bumpy ride, and 80 sides makes the whole process very smooth. However, said 80 sides enable Unity's physics to act a bit screwy, letting the wheelchair make very sharp and fast turns. This isn't something we want, as that would let the player navigate very easily. We're planning on introducing a snippet of code to slow down the turning. A pseudocode example would be:
+
+```
+if(rWheel.velocity > 0 AND lWheel.velocity == 0) //turn
+  rWheel.velocity /= 2; //vice versa for lWheel.
+```
+
+For next week, David and I plan to continue refining and working on the restaurant/bathroom, consulting with Julie all the while. Kyle plans to coordinate with Luke to get LeapMotion working in the library.
+
+
+---
+
 # Week 6 - Minimum Viable Product and Holsters
 ## May 10th, 2019
 
