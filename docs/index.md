@@ -6,6 +6,76 @@
   </ul>
 </nav>
 
+# Week 8 - Restaurant, Library, and Furthermore
+## May 24th, 2019
+
+We've had some pretty major successes, as well as a particularly annoying setback this week.
+
+Luke has been working mostly on getting Leap Motion to work with the wheelchair. This week I worked on getting the Leap Motion to behave within our library environment. The goal was primarily to get the elevator button to interact correctly with the leap hands (pushing the elevator buttons and having the elevator move up and down correctly. I encountered a number of problems with this:
+The first problem was that the leap hands did not interact well with the wheels of the wheelchair in the VR environment. This was likely due to the leap motion considering the wheels to be controllers and causing colliders to behave in a weird way. This resulted in the chair going flying through the environment. Luckily, this was fixable by adding interaction behavior to the wheels and not allowing force or grasping (basically allowing the interaction system to recognize the wheels but not do anything to them).
+
+The second problem I encountered was a problem with two versions of unity downloaded on the same computer. Opening a project created in the older version of Unity in the newer version of Unity somehow resulted in the wheelchair not moving in the VR space even when the wheels moved on the physical wheelchair. The fix for this was also luckily fairly simple, as the project just needed to be run in the version of Unity in which it was created.
+
+The third and final bug was the leap hands pushing the entire elevator out of the scene when trying to push the button for the elevator. This required tinkering with the colliders of the button. This still isn’t perfect, but should be usable.
+
+This week I’ll be working on getting the leap hands to work with the interactions in the restaurant. In particular, we want openable doors that the leap hands can interact with in the area of the restaurant that leads to the bathroom. I will also be working on fixing any leap motion bugs that have popped up in the library and getting the hands to play nicely with the wheels in the restaurant environment (particularly when the wheels collide with chairs and tables).
+
+Kyle's been continuing work on the Library, Bathroom, and getting LeapMotion to work with the elevator:
+This week I mainly worked on the LeapMotion interactions in the library scene, specifically the hand interaction with elevator buttons. We had several plans in mind. The best scenario would be to simulate a button as one would see in real life, which requires the player to push the button forward a short distance. I tried several things. The first thing I tried was to allow the button to only move some distance in a certain direction and keep setting its location back, but the result was not satisfactory and failed often.  I also tried treating the button as a simple harmonic oscillator by applying a spring force F=-kx, but that also causes weird behavior, as the button is not supposed to bounce out of its socket. I probably would try dampening, but my current workaround is to simply use the collider to detect if the hand has entered the button. This is something I would like to fix in the next week.
+
+<video controls="controls">
+  <source type="video/mp4" src="img/leapelevator.mp4"></source>
+  <p>Your browser does not support the video element.</p>
+</video>
+
+Also, the elevator asset I bought online had 18 floors, and so in order for it to work in the library, I will need to change the buttons inside the elevator, too. That would make my current solution an even bigger problem, because we want to prevent the user from touching the wrong button because of LeapMotion being imprecise. We might want to add finer motion detection to make sure that the player actually wants to press that button.
+
+In addition, I also kept adjusting and maintaining the library and the bathroom. I finalized the bathroom scene we had earlier by replacing the walls with cubes, making things more aligned, etc. The bathroom will eventually be connected to the restaurant scene Ilya has set up, as a part of a more complete narrative. I also (finally) found a way to make the textures on different parts of an object align, by making a separate material preset for each part with different sizes.
+
+![bathroom](img/bathroom.png)
+
+For next week, in addition to the elevator buttons, I will also look into making a door that can be opened with LeapMotion. LeapMotion can be a great addition to the interactions in our project, so we want to make use of its full potential.
+
+David and Ilya entered a bit of a competition with each other to make a good looking restaurant: After passing what I had of the bathroom over to Kyle, I continued finishing the second scene, the restaurant.
+Steps:
+Looking for the real restaurant floor plans, and select one which fits our theme (wheelchair-unfriendly).
+Search in the asset store and find the appropriate assets I need.
+Design and create the necessary prefabs that cannot be found in the assets store.
+Place the prefabs at the appropriate position.
+
+Difficulties and process:
+None of the floor plans I found online was perfect, as they are very flexible and friendly for wheelchair users, which is not we want. So I tried to combine several of them to make them more difficult for the wheelchair users to maneuver their way through.
+There is part of the table chart assigned as the kitchen, which we don’t need, so I just use a big cube to replace it.
+
+![rest](img/DavidRest.png)
+
+However, the restaurant scene is still not perfect. Since Ilya also made a very well decorated restaurant, we decided to use that one and save this one for future use.
+After completing the restaurant, we are mostly finished with the environments. So I tried to polish the scenes by making them look more real. I adjust many part of the library and bathroom scene.
+
+For the next week, I will add some quiet music to our scene and work on connecting the scenes we have into a full game. Furthermore, I want to add some level of instructions to our scenes, maybe as voice instructions, subtle visual hints, or simply some text UI.
+
+As for Ilya: This week I mostly worked on the Restaurant environment, in competition with David. The team decided that mine looked better, so that's the one we're using. I built mine with a modular Restaurant asset package.
+
+![map](img/map.png)
+
+As seen above, the route to the bathroom (upper left) is meant to be annoying to get to. We've added a dead end or two in the form of objects in the way. They're marked above with an X. At the moment, this is misleading. We hope to add some kind of UI, a glowing marker, anything, in order to attract the attention of the user so that they don't get too lost. We'll inform them that the bathroom is on the other side of the restaurant, etc.
+
+We've decided to go with Baked Lighting on this because we want to save on the strain VR has on the computer as much as possible.
+
+![baked](img/baked.png)
+
+A majority of items in this scene will be static, and we'll eventually be making it real pretty by adding spot lights to lamps, spot lights to the ceiling, etc. Baked lighting will ensure that we don't lag the game and cause motion sickness.
+
+An incredibly unfortunate bug that popped up on Demo day (It's not demo day without something going wrong) was that due to the shape of the wheels, they'd ride up the colliders of the tables, and the rest of the environment. This is incredibly bad, as it jostles the user without them getting the physical feedback of jostling in real life. Essentially, the camera moves out of their control, riding up a table, and then slamming back down. This is incredibly disorienting, and causes motion sickness.
+
+I tried a variety of solutions that involved adding a box collider that encapsulates the whole wheelchair, so that it won't ride up things and instead just bump into them, but a huge problem is that the wheelchair is made up of a variety of gameobjects, parented under a hierarchal empty gameobject that doesn't move. When the wheelchair moves, the actual model moves in local space, with the wheelchair object remaining still. Moving it would move the whole thing, which isn't what we want, so adding a box collider to the empty gameobject won't work. Adding a box collider to pretty much everything doesn't work, because they're children of the seat, etc. They get around through Unity's translation system, following the parent, but not actually "moving". Because they aren't moving, there's no force, and that means it doesn't collide with other objects.
+
+The only two solutions to this aggravating problem that I can think of that have a chance at working are adding some kind of hinge object to the wheels or seat, and have that object be positioned in front and a copy behind the wheelchair. They'll be made invisible with materials, and be given a box collider to encapsulate the wheelchair. This will make bumping into things simply stop you dead, rather than ride up things. Theoretically. I haven't figured out how to actually implement the idea. The other idea is to rework the wheelchair completely, making it move via the empty hierarchal gameobject. This will fix the problem for sure if we manage to pull it off, but reworking basically ALL of our code that we spent weeks on is probably not feasible in the time frame we have remaining. Worst case scenario, I end up staying late nights to finish.
+
+Beyond that, we've implemented some code that cuts down on turn speed. I won't bother posting it, it's literally just a C# version of the pseudocode posted in the previous week's entry.
+
+Next week, I plan to try to fix this ride-up bug, and continue polishing the restaurant. Maybe make it more clear, etc. I plan to connect David and Kyle's bathroom scene to the restaurant in the upper left, and implement a door that you have to open via a disability button, in order to bring LeapMotion into the mix. Of course, said door will be slow, just like in real life. Nothing like aggravating a player, am I right?
+
 # Week 7 - Environments and Leap motion
 ## May 17th, 2019
 
