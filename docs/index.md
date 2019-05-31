@@ -30,7 +30,7 @@ The next thing we did was adding hand interaction in the elevator. The elevator 
 as a workaround to decide whether the button is collided with an actual hand. (Later we learned that we could actually assign a tag to the elevator and make the collider ignore the elevator tag. That might be a better solution.)
 
 <video width="640" height="480" controls="controls">
-  <source type="video/mp4" src="img/elevator.mp4"></source>
+  <source type="video/mp4" src="img/elevator2.mp4"></source>
   <p>Your browser does not support the video element.</p>
 </video>
 
@@ -84,7 +84,7 @@ This week I’ll be working on getting the leap hands to work with the interacti
 Kyle's been continuing work on the Library, Bathroom, and getting LeapMotion to work with the elevator:
 This week I mainly worked on the LeapMotion interactions in the library scene, specifically the hand interaction with elevator buttons. We had several plans in mind. The best scenario would be to simulate a button as one would see in real life, which requires the player to push the button forward a short distance. I tried several things. The first thing I tried was to allow the button to only move some distance in a certain direction and keep setting its location back, but the result was not satisfactory and failed often.  I also tried treating the button as a simple harmonic oscillator by applying a spring force F=-kx, but that also causes weird behavior, as the button is not supposed to bounce out of its socket. I probably would try dampening, but my current workaround is to simply use the collider to detect if the hand has entered the button. This is something I would like to fix in the next week.
 
-<video controls="controls">
+<video width="640" height="480" controls="controls">
   <source type="video/mp4" src="img/leapelevator.mp4"></source>
   <p>Your browser does not support the video element.</p>
 </video>
@@ -144,7 +144,7 @@ With the wheelchair finished (aside from a tweak or two), the entire group is fo
 
 Luke has been hard at work on the Leap Motion: This week I was working on getting leap motion integrated into our library scene. I started off by just testing the leap motion interactions in a test environment to be sure that I knew how to get it to work in a simple setting. This consisted of making a simple cube and seeing if it fell through the floor immediately, if it bugged the headset out, or if it couldn’t be grasped. After working in the test environment and getting everything to work, I began trying to put the leap motion interaction behavior into our library scene. In order to do this, I had to put the leap rig onto our wheelchair prefab so that the leap camera would move with the wheelchair. This was the point at which I encountered several issues.
 
-<video controls="controls">
+<video width="640" height="480" controls="controls">
   <source type="video/mp4" src="img/leapMotionVideo.mp4"></source>
   <p>Your browser does not support the video element.</p>
 </video>
@@ -173,7 +173,7 @@ Also, I modified the design of the library a bit to make it more realistic. In t
 
 For the elevator, I'm glad that I decided to give up and find a working elevator online. It took some effort to set up, but the result is really nice. The new elevator shows the current floor the elevator is on, and the interior is well decorated. We will replace the buttons with LeapMotion controllable ones in the following week which is going to take some effort, once we get LeapMotion working in our test environments. Here is a video clip of the elevator working in the library:
 
-<video controls="controls">
+<video width="640" height="480" controls="controls">
   <source type="video/mp4" src="img/NewElevator.mp4"></source>
   <p>Your browser does not support the video element.</p>
 </video>
@@ -229,7 +229,7 @@ void Update()
 
 Obviously this worked, as seen in this video:
 
-<video controls="controls">
+<video width="640" height="480" controls="controls">
   <source type="video/mp4" src="img/wheelchairAtWork.mp4"></source>
   <p>Your browser does not support the video element.</p>
 </video>
@@ -275,7 +275,7 @@ We're still facing the bug featuring rotation of the wheels, but I (Ilya Kuchero
 
 Primarily, I'd like to construct a holder for the controller that will be duct taped to the wheel. This will let me just put the controller in and take it out whenever I want. Ideally, the box would be oriented in such a way as to align the orbitals of the controller along the x-axis. Essentially, when I spin it, I want the controller's rotation to go from 0 to 360 rather than making the weird negative and positive number leaps it enjoys. If I orient it properly, rather than taking the relative rotation between frames, I can just hook up the wheel directly to the change in x-axis rotation for the controller. Of course, I'd need to convert the negative rotation values to positive. Euler angles seem to not work for some reason, so this is a hopeful solution - just orienting the controller properly to create the proper axis so that we can FINALLY get a live demo working.
 
-<video controls="controls">
+<video width="640" height="480" controls="controls">
   <source type="video/mp4" src="img/libraryScene.mp4"></source>
   <p>Your browser does not support the video element.</p>
 </video>
@@ -298,7 +298,7 @@ David and Kyle: working on the bathroom interaction and the finishing touches of
 ---
 This week we made some real progress in translating the rotation of the controllers into the rotation of the wheels on a wheelchair.
 
-<video controls="controls">
+<video width="640" height="480" controls="controls">
   <source type="video/mp4" src="img/Week4.mp4"></source>
   <p>Your browser does not support the video element.</p>
 </video>
