@@ -6,6 +6,67 @@
   </ul>
 </nav>
 
+# Week 9 - Approaching endgame
+## May 31th, 2019
+
+We've managed to deal with the previously annoying setback and revealed a whole bunch of other small ones which may have a lasting impact. The second to last week is very much not the time for this sort of thing.
+
+Luke has mostly been dealing with LeapMotion:
+This week I worked on working out the kinks of the leap motion bugs I was encountering last week. There was a recurring problem in the library that involved the leap hands not interacting well with the wheelchair wheels. This happened in a seemingly random manner (sometimes it happened, other times it did not. The only way to reproduce the behavior was to move into and out of the elevator, but it sometimes occurred even if the player did not perform that specific action). This bug was likely related to the problems encountered last week with the leap hands colliding with the wheels, something that was seemingly fixed but popped up occasionally. After reading into leap motion and how it handles collisions a bit more, I tried moving the interactions manager to a different position in our wheelchair hierarchy. This seemed to solve both the problems! However, it created a slightly new problem with the wheels and the hands moving slightly every time they came into contact with one another.
+
+Luckily, Ilya was able to fix a different bug in the wheelchair movement by adding a script to the wheels that defined collisions. After importing this new version of the wheelchair and adding leap interactions to it, everything seemed to be working as intended, meaning that the leap motion interactions bugs went away due to a change meant to solve a different issue! Sometimes things work out.
+
+The rest of the work I did this week involved testing the leap motion interactions with the elevator. These interactions worked extremely well once the leap interactions were added to the new version of the wheelchair, so everything in the library scene was working as intended. There's nothing too exciting to show visually, this was really just bug testing, Ilya will talk more about that.
+
+Next week I will be working on adding different leap hands into the scene so that players won’t see the skeletal versions of the leap hands. I will also be making sure the changes made to these hands will not break our environments, doing all the last minute testing to make sure leap hands don’t make any of our interactable objects/wheelchair don’t freak out. We're pretty near done here.
+
+(David and I worked together this week so we figured we might just write something for both of us).
+
+This week we (David and Kyle) mainly worked on improving the Leap Motion interactions in the library and the bathroom environments.
+
+The first thing we wanted to add was adding doors to the bathroom stalls that the player can push or pull open with their hands via Leap Motion. Unfortunately, the doors never worked as we expected. Sometimes we were able to run the wheelchair into the door's hinge joint and the door just came off; even worse, the door bounces back and knocks the wheelchair to the ground. Because of all these glitches, we decided not to include doors in the public bathroom for now, and only add them if we have time.
+
+The next thing we did was adding hand interaction in the elevator. The elevator asset we purchased from the asset store had 18 floors, so we had to remove the entire button panel and create our own with only two buttons. We simply used a collider on the button to detect if a hand is entering it. The main challenge we faced was that the button is not only touched by the hand, but also the interiors of the elevator itself. What made it really annoying was that the we can't find the game objects for the hands until we start running game, making it impossible to assign tags to the hands. After some trials and errors, we found that all parts of the hand skeleton has are called "Contact xxx." Therefore, we simply used `other.name.Contains("Contact")`
+as a workaround to decide whether the button is collided with an actual hand. (Later we learned that we could actually assign a tag to the elevator and make the collider ignore the elevator tag. That might be a better solution.)
+
+<video width="640" height="480" controls="controls">
+  <source type="video/mp4" src="img/elevator.mp4"></source>
+  <p>Your browser does not support the video element.</p>
+</video>
+
+Another cool thing we learned this week is that we can export assets into a package, and Unity will automatically include all dependencies of that asset. This is really convenient, as we had a lot of unused assets downloaded from the asset store. But since Unity keeps the original directory structure when exporting the package, it's still essential that we organize the assets folder nicely so we don't mess up the directory structure of the user's project.
+
+Next week, we will work on adding audio to our project. This will mainly consist of adding background music as well as voice instructions. We will also try to make the LED display in the elevator fully functional -- now the elevator moves, but the LED panel doesn't show the current floor properly.
+
+Ilya was working on ironing out some kinks in the wheelchair and bringing the various scenes the team was working on together:
+This week I was dealing with the previous bug of the wheelchair riding up things. This caused the wheelchair to tilt which was major motion sickness. I had a few ideas on how to deal with it, such as having an invisible GameObject follow the chair around, but this didn't pan out due to the hierarchy structure of the chair - the children were being translated, not physically active, so their colliders weren't working.
+
+The solution to this was actually found by accident. While working on this, I noticed that the chair would seemingly tilt a little bit. If you look back into previous entries, you'll see what I mean. The tilting was far, far less than before. The way we were dealing with this was by teleporting a chair model around relative to the wheels, and making it look in a specific direction with LookRotation. I found that the Vector3 being used for calculating the direction was somewhat tilted, so I applied a quick rotation.x = 0, and the wheelchair stopped tilting. This apparently had the magical consequence of A) Fixing the LeapMotion hands from freaking about the wheels on the chair, and B) preventing the actual tilting of the wheelchair when it was running into things, since its rotation was now fixed. This majorly cut down on motion sickness, since the horizon line was no longer screwy. All that from an accident. Go figure.
+
+The next thing to report is stitching the bathroom and the restaurant together.
+
+![stitched](img/stitched.png)
+
+Since each group member was working on different scenes, we still had to bring things together. It worked out pretty well, just a few scaling issues, and moving walls to align with other walls.
+
+Something to really bring to attention is the optimization of the restaurant scene. It has over 3.2 million vertices, which is pretty concerning. Running the scene, I was hitting 54 FPS. That's absolutely unacceptable. I ended up doing a whole lot of optimization: I made sure all lighting was baked, I made the lighting calculations single-pass, I set all the materials in the Assets to use GPU batching. I ended up reducing the draw calls massively, leading to a solid 120 FPS.
+
+Something else to note is that users were frustrated with the level design. It was hard getting out of areas. In our excitement, we seem to have made things a tad too difficult. This is easily fixed by getting rid of roughly 50% of the obstacles, no big deal. In case this isn't enough, we're going to add keyboard shortcuts to teleport the player quickly through a puzzle. We want to make it easy enough to get through, but hard enough to get the message across. If the user decides to quit, we'll have some videos saved on the desktop during demo day to show them the end result of the puzzle. Beyond that, we also will have these videos playing during the "trailer" for the experience on demo day, so users will have an idea of what to do anyway.
+
+Lastly, the big thing to consider is motion sickness. The thing is, this will inherently make you somewhat motion sick - you're moving in a game while sitting still. I personally don't feel a thing, while others report feeling nauseous. This is obviously a serious issue. Having received feedback from testers, we plan on doing a few things:
+
+Reducing the Field of View. It was noted that motion sickness usually occurs from the peripherals not being what you think they'd be. Movement is smooth in real life, and you brain can process it, but VR is a bit different. We hope that by shrinking the FOV, we can alleviate some of that.
+
+Making the movement a bit smoother. One user brought up how, because our tracking was so precise, the wheels moved at different speeds in game. That is, one wheel moves at 50.4 velocity, and another moves at 49.3 or something. This actually causes turning in the environment, despite such a small difference. This further contributes to the peripheral movement that causes motion sickness. We plan to average the two values and apply them to both the wheels, making for smoother movement.
+
+Another user noted that the speed of the wheels were a bit too fast in real life. There should be more resistance. I plan on sliding some material underneath the current chair to make it slower, and also making the foam stoppers thicker. This will be optimized on the second chair we're building.
+
+Another thing noted is that it is a bit too physically exhausting, especially with the upcoming Summer season. We plan on putting fans in front of the user. This should help alleviate some heat, as well as provide physical feedback of "movement".
+
+This next week, I plan to do some polishing in the scene, adding some static human models, maybe help David and Kyle find background audio, make the wheels on the chair produce a sound when they collide with something, like a THUNK, etc. Nothing too major on that front. I plan to tackle the motion sickness issues discussed above with the proposed solutions I mentioned, that will be my main focus. I'd rather have an empty restaurant than a full one where the user throws up in their lap.
+
+All in all, we're pretty much done with the big stuff, and are just working on the little things to make the experience more comfortable.
+
 # Week 8 - Restaurant, Library, and Furthermore
 ## May 24th, 2019
 
