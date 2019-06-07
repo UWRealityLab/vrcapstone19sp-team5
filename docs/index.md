@@ -6,6 +6,74 @@
   </ul>
 </nav>
 
+# Week 10 - Small Touch Ups
+## June 7th, 2019
+
+We're basically done here. Demo day is coming up on Tuesday, and we've got most if not all of the thing done. All that's left is to fix the lighting in the library, and adjust a couple of values and settings, along with some other small stuff.
+
+Due to the small amount of things we have left to do, this blog post probably won't be as long as the others.
+
+Luke mostly worked on getting the LeapMotion hands to have a different appearence:
+This week I worked on getting the leap motion hands to appear as actual human hands rather than skeleton hands. This mostly involved reading leap motion documentation and finding the appropriate skin that we wanted to use for the hands. The problem was that the human hands would not show up in-game when trying to replace the skeleton hands. After solving this issue by having the hand model top level object recognize the new hands, the hands that were selected appeared as outlines rather than actual hands. This eventually was fixed by finding the appropriate prefab in the Leap Motion assets folder and having the hand model top level object recognize that prefab, then tinkering with some of the tags to get the leap rig to recognize the hand movement.
+After getting the hands to look correct, I tested our leap interactions in our scenes to make sure this change didn’t break anything.
+
+David and Kyle worked mostly on sound design: This week we (David and Kyle) added some final touches to the environments by adding music. Adding music was easy --- just adding an audio source object to the scene and set it to “Play on awake” and “Loop” makes the music loop nicely in the background. We also added auditory feedback when the user bumps into something else (basically just a quick bump sound.)
+We added an audio source to the wheelchair, and used a script on all child game objects of the wheelchair with a collider to call `Play` on the wheelchair’s audio source:
+```
+// children with colliders
+public class WheelchairCollisionSoundChild : MonoBehaviour
+{
+    public float collisionSpeedThreshold = 0.5f;
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.relativeVelocity.magnitude > collisionSpeedThreshold && !collision.collider.gameObject.CompareTag("FloorTiles"))
+        {
+            wheelchair.PlayCollisionSound();
+        }
+    }
+}
+
+// parent
+public class WheelchairCollisionSound : MonoBehaviour
+{
+    private AudioSource audioSource;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    public void PlayCollisionSound()
+    {
+        audioSource.Play();
+    }
+}
+```
+We are still in the process of finalizing the elevator so the visual effects look consistent. We expect it to be perfectly working by the demo day. The idea is that creating an audio feedback will help with motion sickness and just general quality of life.
+
+Ilya had a surprisingly busy week: I was actually dealing with way more stuff than I thought. Having tested our handiwork a week prior, I set out on getting rid of as much motion sickness as possible. The first was completely redesigning the wheelchairs. This involved using Single Speed wheels instead of Geared Wheels, which let me actually secure them properly to the chair. The wheels now move at roughly the same speed, and the movement is smoother in game as a result.
+
+I also reduced the Field of View of the VR camera. There have been studies that show the FOV being reduced helps alleviate some motion sickness, and reducing it even more while turning would be great. Unfortunately, I don't really have a clue how to have a dynamically changing texture that depends on the speed of a turn. It's a stretch goal.
+
+The VR camera has a hardcoded field of view of 102 degrees. You can't mess with it. So the solution was just to teleport a box with a black texture that has a transparent circle on it directly in front of the camera. This helped create the illusion that the field of view shrank. You can see the cube directly on top of the Player object below:
+
+![windows](img/windows.jpg)
+
+Furthermore, I've implemented windows along the walls of the restaurant as seen above. Something that was recommended to me was to let the player see the Skybox. This helped create the illusion of an open space, as well as establishing a horizon line.
+
+Another thing I've messed with was making the wheelchair movements smoother, by having both wheels track only one controller when both wheels are moving in the same direction (indicating they're going forward). Rather than have a slightly tilted and jerky motion due to the precise nature of the controllers, we now have a smooth forwards movement. This unfortunately, has one small bug: there's a small jitter at the end of a movement, as one wheel stops half a second before the other in real life. Since I have some code that sets the speed to 0 if the change in degrees of the wheel is too small, what happens is:
+```
+L: 15 R: 15
+L: 15 R: 0
+L: 0 R: 0
+```
+Where the left wheel turns for that extra half second while the other wheel is forced to a stop. This causes a small mini turn at the end of a motion, which is quite annoying and possibly causing motion sickness. But this is all better than what we had before. This is also easily mitigated by having the player manually stop themselves, just grabbing on to the wheels like a regular person. This bug only shows up if you throw the wheels forward and don't touch them.
+
+All that's really left is to implement a few quick things, like goal points, and sounds, and some other junk. We're pretty much done here.
+
+That's really it for us. It was a pleasure doing this capstone project. Thank you for the opportunity.
+
 # Week 9 - Approaching endgame
 ## May 31th, 2019
 
